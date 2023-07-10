@@ -139,6 +139,6 @@ class ArticlesTest extends TestCase
                 'data.author',
                 'data.category',
             ])
-            );
+        );
     }
 }

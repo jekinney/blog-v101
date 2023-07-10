@@ -43,14 +43,13 @@ Route::prefix('/v1')->group(function () {
         Route::delete('/destroy/{article}', [ArticleController::class, 'destroy']);
     });
     Route::prefix('/comment')->group(function () {
-        Route::get('/admin', [CommentController::class, 'admin']);
+        Route::get('/admin', [CommentController::class, 'admin'])->withTrashed();
         Route::get('/public', [CommentController::class, 'public']);
         Route::get('/select', [CommentController::class, 'select']);
-        Route::get('/show/{article}', [CommentController::class, 'show']);
-        Route::get('/edit/{article}', [CommentController::class, 'edit']);
-        Route::put('/update/{article}', [CommentController::class, 'update']);
+        Route::get('/show/{comment}', [CommentController::class, 'show']);
+        Route::get('/edit/{comment}', [CommentController::class, 'edit']);
+        Route::put('/update/{comment}', [CommentController::class, 'update']);
         Route::post('/store', [CommentController::class, 'store']);
-        Route::patch('/visible/{article}', [CommentController::class, 'visible']);
-        Route::delete('/destroy/{article}', [CommentController::class, 'destroy']);
+        Route::delete('/destroy/{comment}', [CommentController::class, 'destroy'])->withTrashed();
     });
 });

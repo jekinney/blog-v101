@@ -2,8 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\Comment\FullResource;
-use App\Http\Resources\Comment\ListResource;
+use App\Http\Resources\Comment\{
+    FullResource,
+    ListResource,
+    PartialResource
+};
+use App\Http\Requests\Comment\{
+    StoreRequest,
+    UpdateRequest
+};
 use App\Models\Comment;
 use Illuminate\Http\Request;
 
@@ -44,17 +51,17 @@ class CommentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request, Comment $comment): PartialResource
     {
-        //
+        return new PartialResource($comment->store($request->validated()));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Comment $comment)
+    public function update(UpdateRequest $request, Comment $comment)
     {
-        //
+        return new PartialResource($comment->put($request->validated()));
     }
 
     /**
@@ -62,6 +69,6 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        //
+        return new PartialResource($comment->remove());
     }
 }

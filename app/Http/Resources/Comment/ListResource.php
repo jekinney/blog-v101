@@ -14,6 +14,15 @@ class ListResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'body' => $this->body,
+            'author' => $this->author,
+            'author_id' => $this->author_id,
+            'article_id' => $this->article_id,
+            'updated_at' => $this->updated_at,
+            'created_at' => $this->created_at,
+            'deleted' => empty($this->deleted)? false:true,
+        ];
     }
 }

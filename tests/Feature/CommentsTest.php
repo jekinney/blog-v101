@@ -20,7 +20,7 @@ class CommentsTest extends TestCase
      */
     public function test_get_show_data(): void
     {
-        $comment = Comment::factory()
+         $comment = Comment::factory()
             ->for(User::factory()->create(), 'author')
             ->for(Article::factory()->create(), 'article')
             ->create();
@@ -31,10 +31,12 @@ class CommentsTest extends TestCase
             ->assertJson(fn (AssertableJson $json) => $json->hasAll([
                 'data.id',
                 'data.body',
-                'data.author.name',
-                'data.is_visible',
+                'data.author',
+                'data.article',
+                'data.created_at',
+                'data.updated_at',
             ])
-            );
+        );
     }
 
     /**
@@ -52,77 +54,75 @@ class CommentsTest extends TestCase
         $response->assertStatus(200)
             ->assertJson(fn (AssertableJson $json) => $json->hasAll([
                 'data.id',
-                //'data.body',
-                //'data.author.name',
-                //'data.is_visible',
+                'data.body',
+                'data.author_id',
+                'data.article_id',
+                'data.updated_at',
+                'data.created_at',
             ])
-            );
+        );
     }
 
-    // /**
-    //  * A basic feature test example.
-    //  */
-    // public function test_remove_a_article(): void
-    // {
-    //     $article = Article::factory()->create();
+    /**
+     * A basic feature test example.
+     */
+    public function test_remove_a_comment(): void
+    {
+        $comment = Comment::factory()->create();
 
-    //     $response = $this->delete($this->base.'/destroy/'.$article->id);
+        $response = $this->delete($this->base.'/destroy/'.$comment->id);
 
-    //     $response->assertStatus(200);
-    // }
+        $response->assertStatus(200)
+            ->assertJson(fn (AssertableJson $json) => $json->hasAll([
+                'data.id',
+                'data.body',
+                'data.author_id',
+                'data.article_id',
+            ])
+         );
+    }
 
-    // /**
-    //  * A basic feature test example.
-    //  */
-    // public function test_updating_a_article(): void
-    // {
-    //     $article = Article::factory()
-    //         ->for(User::factory()->create(), 'author')
-    //         ->for(Category::factory()->create(), 'category')
-    //         ->create();
+    /**
+     * A basic feature test example.
+     */
+    public function test_updating_a_comment(): void
+    {
+         $comment = Comment::factory()
+            ->for(User::factory()->create(), 'author')
+            ->for(Article::factory()->create(), 'article')
+            ->create();
 
-    //     $response = $this->putJson($this->base.'/update/'.$article->id, $article->toArray());
+        $response = $this->putJson($this->base.'/update/'.$comment->id, ['body' => 'Updated the comment.']);
 
-    //     $response->assertStatus(200)
-    //         ->assertJson(fn (AssertableJson $json) => $json->hasAll([
-    //             'data.id',
-    //             'data.body',
-    //             'data.title',
-    //             'data.author',
-    //             'data.category',
-    //         ])
-    //     );
+        $response->assertStatus(200)
+            ->assertJson(fn (AssertableJson $json) => $json->hasAll([
+                'data.id',
+                'data.body',
+                'data.author_id',
+                'data.article_id',
+            ])
+        );
+    }
 
-    //     // Re-send to fail validation
-    //     $article = Article::factory()->create([
-    //         'title' => 'Updated'
-    //     ]);
+    /**
+     * A basic feature test example.
+     */
+    public function test_storing_a_comment(): void
+    {
+         $comment = Comment::factory()
+            ->for(User::factory()->create(), 'author')
+            ->for(Article::factory()->create(), 'article')
+            ->make();
 
-    //     $response = $this->putJson($this->base.'/update/'.$article->id, $article->toArray());
+        $response = $this->postJson($this->base.'/store', $comment->toArray());
 
-    //     $response->assertStatus(422);
-    // }
-
-    // /**
-    //  * A basic feature test example.
-    //  */
-    // public function test_storing_a_article(): void
-    // {
-    //     $article = Article::factory()
-    //         ->for(User::factory()->create(), 'author')
-    //         ->for(Category::factory()->create(), 'category')
-    //         ->make();
-
-    //     $response = $this->postJson($this->base.'/store', $article->toArray());
-
-    //     $response->assertStatus(201)
-    //      ->assertJson(fn (AssertableJson $json) => $json->hasAll([
-    //             'data.id',
-    //             'data.body',
-    //             'data.title',
-    //             'data.author',
-    //             'data.category',
-    //         ])
-    //     );
-    // }
+        $response->assertStatus(201)
+            ->assertJson(fn (AssertableJson $json) => $json->hasAll([
+                'data.id',
+                'data.body',
+                'data.author_id',
+                'data.article_id',
+            ])
+        );
+    }
 }

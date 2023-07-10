@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('comment_id');
             $table->unsignedBigInteger('author_id');
             $table->mediumText('body');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('article_id');
             $table->unsignedBigInteger('author_id');
             $table->mediumText('body');
-            $table->boolean('is_visible')->default(1);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

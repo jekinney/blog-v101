@@ -20,7 +20,6 @@ class CommentFactory extends Factory
             'body' => fake()->sentence(),
             'author_id' => 1,
             'article_id' => 1,
-            'is_visible' => 1,
         ];
     }
 }

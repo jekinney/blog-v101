@@ -6,10 +6,11 @@ use App\Queries\Queries;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Comment extends Queries
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     /**
      * Always eager load relationship(s)
@@ -17,15 +18,6 @@ class Comment extends Queries
      * @var array
      */
     protected $with = ['author'];
-
-    /**
-     * Explicitly set casting type by column
-     *
-     * @var array
-     */
-    protected $casts = [
-        'is_visible' => 'bool',
-    ];
 
     /**
      * Guarded columns from mass assignment

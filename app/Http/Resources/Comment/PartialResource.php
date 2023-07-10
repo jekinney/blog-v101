@@ -19,8 +19,9 @@ class PartialResource extends JsonResource
         return [
             'id' => $this->id,
             'body' => $this->body,
-            'author' => new AuthorResource($this->whenLoaded('author', $this->author)),
-            'article' => new ArticleResource($this->whenLoaded('article', $this->article)),
+            'author' => $this->author,
+            'author_id' => $this->author_id,
+            'article_id' => $this->article_id,
         ];
     }
 }
