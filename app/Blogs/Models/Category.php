@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
-use App\Queries\Queries;
+use App\Queries\EloquentQueries;
+use App\Blogs\Traits\HasAuthor;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Category extends Queries
+class Category extends EloquentQueries
 {
-    use HasFactory;
+    use HasFactory, HasAuthor;
 
     /**
      * Guarded columns from mass assignment
@@ -30,19 +31,5 @@ class Category extends Queries
     public function articles(): HasMany
     {
         return $this->hasMany(Article::class);
-    }
-
-    /// Queries
-
-    /**
-     * Attempt to remove a category
-     */
-    public function remove(): bool
-    {
-        if ($this->articles_count > 0) {
-            return abort(500, 'Unable to remove a category with articles attached.');
-        }
-
-        return $this->delete();
     }
 }
