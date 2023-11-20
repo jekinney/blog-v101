@@ -2,16 +2,19 @@
 
 namespace App\Models;
 
-use App\Queries\Queries;
+use App\Queries\EloquentQueries;
+use App\Blogs\Traits\HasAuthor;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\{
+    HasMany,
+    BelongsTo,
+    BelongsToMany,
+    HasManyThrough
+};
 
-class Article extends Queries
+class Article extends EloquentQueries
 {
-    use HasFactory;
+    use HasFactory, HasAuthor;
 
     /**
      * Always eager load relationship(s)
